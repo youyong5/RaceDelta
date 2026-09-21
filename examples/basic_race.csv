@@ -1,0 +1,9 @@
+lap,driver,lap_time_ms,compound,tyre_age_laps,pit,track_status,weather
+1,ALP,90120,SOFT,3,false,GREEN,DRY
+1,BRV,90540,MEDIUM,5,false,GREEN,DRY
+2,ALP,90310,SOFT,4,false,GREEN,DRY
+2,BRV,90610,MEDIUM,6,true,GREEN,DRY
+3,ALP,90480,SOFT,5,true,GREEN,DRY
+3,BRV,91020,HARD,1,false,GREEN,DRY
+4,ALP,91250,MEDIUM,1,false,GREEN,DRY
+4,BRV,90890,HARD,2,false,GREEN,DRY

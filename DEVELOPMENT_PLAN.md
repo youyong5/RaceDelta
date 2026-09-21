@@ -2,19 +2,19 @@
 
 **Competition target date:** 2026-09-30
 
-## M0 — Project initialization, conventions, license, and baseline verification
+## M0 — Project initialization, conventions, license, and baseline verification — Complete
 
 **Goal:** Establish a runnable MoonBit scaffold, repository conventions, license, and baseline commands.
 
 **Done when:** The scaffold, documentation, license, and validation commands are present and the generated starter example remains runnable.
 
-## M1 — CSV data structures, parsing, and input validation
+## M1 — CSV data structures, parsing, and input validation — Complete
 
 **Goal:** Define lap-by-lap CSV input structures and validate parse errors and missing data.
 
 **Done when:** Local example CSV data can be parsed and invalid input produces tested, actionable errors.
 
-## M2 — Cumulative time, gaps, stints, and race-event analysis
+## M2 — Cumulative time, gaps, stints, and race-event analysis — Not started
 
 **Goal:** Reconstruct race timelines and identify stints, gaps, and notable events.
 

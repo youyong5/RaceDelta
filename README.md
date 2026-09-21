@@ -17,6 +17,18 @@ moon run cmd/main
 
 The `moon run cmd/main` example currently prints the template greeting; it is not a race-analysis CLI.
 
+## CSV v1 input
+
+The current library validates CSV v1 input with these fields:
+
+```text
+lap,driver,lap_time_ms,compound,tyre_age_laps,pit,track_status,weather
+```
+
+Offline fictional examples are available at [basic_race.csv](examples/basic_race.csv) and [mixed_conditions.csv](examples/mixed_conditions.csv). The full validation rules are in the [product specification](PROJECT_SPEC.md#csv-v1-format).
+
+Race pace analysis, gap calculation, strategy analysis, counterfactual simulation, and a full CLI are still not implemented.
+
 ## Project direction
 
 - [Product specification](PROJECT_SPEC.md)
