@@ -32,7 +32,7 @@
 
 **Done when:** Actual and counterfactual outcomes can be compared reproducibly from the same input.
 
-## M5 — Turning-point explanations and report output — Not started
+## M5 — Turning-point explanations and report output — Complete
 
 **Goal:** Explain performance and strategic crossovers in readable reports.
 

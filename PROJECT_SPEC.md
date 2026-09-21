@@ -128,6 +128,20 @@ M4 provides a deterministic library-level replay for one target driver against o
 
 M4 is not a physics or traffic simulation. It does not alter other drivers, infer overtakes within a lap, model traffic/DRS/driver behavior, search strategies, classify crossovers, read files, or provide a complete CLI. See [SIMULATION.md](SIMULATION.md) for the full replay contract and error behavior.
 
+## M5 crossover detection and explanations
+
+M5 derives deterministic crossover points and an English Markdown explanation from an already-completed `StrategySimulation`; it never reruns the simulation.
+
+- A **performance crossover** compares only M3 tyre pace deltas: `actual_tyre_pace_delta_ms - simulated_tyre_pace_delta_ms`. Positive means the alternative tyre state is theoretically faster; negative means the actual tyre state is theoretically faster. Neutral anchors, pit loss, cumulative time, and opponent behaviour are excluded.
+- A **strategic crossover** uses M4 `cumulative_time_gain_ms`, defined as actual target cumulative time minus simulated target cumulative time. Positive means the alternative is cumulatively better; negative means it is worse. This includes the modeled effects of pit loss, tyre choice, and degradation.
+- An **opponent crossover** uses M4 `simulated_signed_gap_to_opponent_ms`, defined as simulated target cumulative time minus actual opponent cumulative time. Positive means the target trails; negative means the target leads.
+
+For performance and strategic relationships, the first non-zero value produces an Equal-to-non-equal point. Thereafter zero values neither produce an event nor erase the last non-zero relationship. A subsequent opposite sign produces exactly one crossover and records the last non-zero value as `previous_value_ms`. Thus positive → zero → positive is not repeated, while negative → zero → positive changes at the later positive lap. For opponent relationships, the first non-zero relationship only establishes the baseline; an event is emitted only when a later non-zero value has the opposite sign, with zero values handled the same way.
+
+M5 also emits stable turning points for status/weather changes, actual and simulated pits, simulated Safety Car pit opportunities, the three crossover kinds, changes in relative actual-versus-simulated position, and the best positive / worst negative single-lap gain. Points sort by ascending lap, then by the documented type order in [EXPLANATION.md](EXPLANATION.md). Safety Car opportunity savings are calculated from the supplied `PaceModelConfig`, never hard-coded.
+
+`explain_strategy(config, simulation)` returns a `StrategyExplanation` or a structured `ExplanationError`; `render_strategy_markdown(explanation)` renders its stable report. The report includes verdict, stop comparison, crossover lists, turning points, a lap trace, and explicit model limitations. Its time values are formatted from integer milliseconds to seconds with three decimals. See [EXPLANATION.md](EXPLANATION.md) for the full contract.
+
 ## Non-goals
 
 - No real-time race API integration.
@@ -141,7 +155,7 @@ M4 is not a physics or traffic simulation. It does not alter other drivers, infe
 - Gap and position are decided and reconstructed from `lap_time_ms` as defined in M2.
 - The tyre degradation and pit-loss model rules are decided in [MODEL.md](MODEL.md); callers may replace parameters through `PaceModelConfig`.
 - M4 replay semantics and its complete replacement-pit-plan input are decided in [SIMULATION.md](SIMULATION.md).
-- The exact performance-crossover search method remains undecided.
+- Automatic strategy search remains a later optional capability; M5 only explains an explicit M4 replay.
 - Final CLI commands and parameter names.
 - Whether final reports are terminal output, HTML, or both.
 

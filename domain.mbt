@@ -302,3 +302,116 @@ pub(all) struct StrategyError {
   lap : Int?
   message : String
 } derive(Eq, Debug)
+
+///|
+/// Final time-based assessment of a counterfactual strategy.
+pub(all) enum StrategyVerdict {
+  Improved
+  Worsened
+  Unchanged
+} derive(Eq, Debug)
+
+///|
+/// The independent relationship represented by a crossover point.
+pub(all) enum CrossoverKind {
+  Performance
+  Strategic
+  Opponent
+} derive(Eq, Debug)
+
+///|
+/// The direction in which a crossover changes its relationship.
+pub(all) enum CrossoverDirection {
+  AlternativeBecomesFaster
+  ActualBecomesFaster
+  AlternativeBecomesBetter
+  ActualBecomesBetter
+  TargetMovesAhead
+  TargetFallsBehind
+} derive(Eq, Debug)
+
+///|
+/// A deterministic sign-change point in a strategy comparison.
+pub(all) struct CrossoverPoint {
+  lap : Int
+  kind : CrossoverKind
+  direction : CrossoverDirection
+  previous_value_ms : Int
+  current_value_ms : Int
+} derive(Eq, Debug)
+
+///|
+/// The actual-versus-simulated effect measured on one lap.
+pub(all) struct LapImpact {
+  lap : Int
+  lap_time_gain_ms : Int
+  cumulative_time_gain_ms : Int
+} derive(Eq, Debug)
+
+///|
+/// Stable categories for explainable strategy turning points.
+pub(all) enum TurningPointKind {
+  TrackStatusChange
+  WeatherChange
+  ActualPitStop
+  SimulatedPitStop
+  SafetyCarPitOpportunity
+  PerformanceCrossover
+  StrategicCrossover
+  OpponentCrossover
+  RelativePositionGain
+  RelativePositionLoss
+  BestLapGain
+  WorstLapLoss
+} derive(Eq, Debug)
+
+///|
+/// A concise, deterministic event used by the report and future CLI output.
+pub(all) struct TurningPoint {
+  lap : Int
+  kind : TurningPointKind
+  impact_ms : Int?
+  message : String
+} derive(Eq, Debug)
+
+///|
+/// A pit stop reconstructed from a completed strategy comparison.
+pub(all) struct StrategyPitStop {
+  lap : Int
+  next_compound : Compound?
+} derive(Eq, Debug)
+
+///|
+/// A deterministic explanation derived from, but not mutating, a simulation.
+pub(all) struct StrategyExplanation {
+  verdict : StrategyVerdict
+  target_driver : String
+  opponent_driver : String
+  actual_stops : Array[StrategyPitStop]
+  simulated_stops : Array[StrategyPitStop]
+  performance_crossovers : Array[CrossoverPoint]
+  strategic_crossovers : Array[CrossoverPoint]
+  opponent_crossovers : Array[CrossoverPoint]
+  turning_points : Array[TurningPoint]
+  best_lap_gain : LapImpact?
+  worst_lap_loss : LapImpact?
+  summary : StrategySummary
+  laps : Array[StrategyLapComparison]
+} derive(Eq, Debug)
+
+///|
+/// Stable categories for explanation and report-generation failures.
+pub(all) enum ExplanationErrorCode {
+  InvalidModel
+  TyreDeltaFailure
+  EmptySimulation
+  InconsistentSimulation
+} derive(Eq, Debug)
+
+///|
+/// A user-facing explanation error; `lap` identifies a lap-specific failure.
+pub(all) struct ExplanationError {
+  code : ExplanationErrorCode
+  lap : Int?
+  message : String
+} derive(Eq, Debug)
