@@ -94,6 +94,26 @@ Events are ordered by lap, then by type (`TrackStatusChange`, `WeatherChange`, `
 
 `RaceAnalysis` stores drivers in lexicographic order, states by lap then driver, stints by driver then stint number, and events in this stable event order.
 
+## M3 explanatory pace model
+
+The [pace model](MODEL.md) is a deterministic, integer-millisecond model for tyre pace deltas and current-lap pit loss. Its neutral lap time is an anchor after removing only these modeled effects; it can still contain driver/car pace, circuit characteristics, fuel, traffic, mistakes, Safety Car slowing, and other unexplained factors. M3 does not attempt to infer them.
+
+```text
+tyre_pace_delta_ms
+  = fresh_delta_ms(compound, weather)
+  + (tyre_age_laps - 1) * degradation_ms_per_lap
+  + max(0, tyre_age_laps - cliff_age_laps) * cliff_extra_ms_per_lap
+
+predicted_lap_time_ms
+  = neutral_lap_time_ms + tyre_pace_delta_ms + current_lap_pit_loss_ms
+```
+
+Tyre age starts at 1; cliff loss begins only after the cliff age. A negative pace delta is faster than the neutral anchor. The inverse calculation removes the same tyre delta and modeled pit loss from an observed lap, and estimate/derive round-trip exactly with identical valid conditions.
+
+Pit loss is zero for `pit=false`; for a pit lap it is selected by track status. The default demonstration configuration uses `22000 ms` under `GREEN` and `12000 ms` under `SAFETY_CAR`. Safety Car slowing itself remains in the neutral anchor rather than being added by this model.
+
+The default profile values are replaceable demonstration assumptions for explaining strategy relationships. They are not official parameters for any real circuit or tyres and must not be presented as real F1 predictions. The basic tyre degradation and pit-loss rules are decided; performance-crossover search and strategy simulation remain later work.
+
 ## Non-goals
 
 - No real-time race API integration.
@@ -105,8 +125,8 @@ Events are ordered by lap, then by type (`TrackStatusChange`, `WeatherChange`, `
 
 - CSV v1 fields and missing-value rules are decided as specified above.
 - Gap and position are decided and reconstructed from `lap_time_ms` as defined in M2.
-- Tyre-degradation model parameter format.
-- Pit-loss calculation under a Safety Car.
+- The tyre degradation and pit-loss model rules are decided in [MODEL.md](MODEL.md); callers may replace parameters through `PaceModelConfig`.
+- The exact performance-crossover search method remains undecided.
 - Final CLI commands and parameter names.
 - Whether final reports are terminal output, HTML, or both.
 

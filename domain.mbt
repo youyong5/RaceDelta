@@ -152,3 +152,57 @@ pub struct RaceAnalysis {
   stints : Array[Stint]
   events : Array[RaceEvent]
 } derive(Eq, Debug)
+
+///|
+/// Demonstration fresh-tyre pace deltas by weather, in integer milliseconds.
+pub(all) struct WeatherPaceDeltas {
+  dry_ms : Int
+  damp_ms : Int
+  wet_ms : Int
+} derive(Eq, Debug)
+
+///|
+/// Configurable pace and degradation parameters for one tyre compound.
+pub(all) struct TyreProfile {
+  compound : Compound
+  fresh_deltas : WeatherPaceDeltas
+  degradation_ms_per_lap : Int
+  cliff_age_laps : Int
+  cliff_extra_ms_per_lap : Int
+} derive(Eq, Debug)
+
+///|
+/// Configurable modeled pit loss for each supported track status.
+pub(all) struct PitLossProfile {
+  green_pit_loss_ms : Int
+  safety_car_pit_loss_ms : Int
+} derive(Eq, Debug)
+
+///|
+/// The complete replaceable configuration for the explanatory pace model.
+pub(all) struct PaceModelConfig {
+  tyre_profiles : Array[TyreProfile]
+  pit_loss_profile : PitLossProfile
+} derive(Eq, Debug)
+
+///|
+/// Stable error categories for model configuration and calculations.
+pub(all) enum ModelErrorCode {
+  MissingTyreProfile
+  DuplicateTyreProfile
+  NegativeLinearDegradation
+  InvalidCliffAge
+  NegativeCliffExtraDegradation
+  NegativeGreenPitLoss
+  NegativeSafetyCarPitLoss
+  InvalidTyreAge
+  InvalidLapTime
+  NonPositiveResult
+} derive(Eq, Debug)
+
+///|
+/// A deterministic, user-facing model error suitable for future CLI output.
+pub(all) struct ModelError {
+  code : ModelErrorCode
+  message : String
+} derive(Eq, Debug)

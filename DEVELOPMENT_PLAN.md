@@ -20,7 +20,7 @@
 
 **Done when:** Tested deterministic analysis derives these values from CSV input.
 
-## M3 — Tyre degradation, track state, and pit-loss models — Not started
+## M3 — Tyre degradation, track state, and pit-loss models — Complete
 
 **Goal:** Model tyre degradation, dry/damp/wet states, and pit-stop loss including Safety Car conditions.
 

@@ -31,7 +31,13 @@ Offline fictional examples are available at [basic_race.csv](examples/basic_race
 
 From validated CSV v1 data, the library currently reconstructs integer-millisecond cumulative times, end-of-lap positions, leader gaps, intervals to the car ahead, signed driver-to-driver gaps, tyre stints, and stable pit/status/weather/position events. Safety Car lap times are accumulated exactly as supplied; M2 does not compress gaps.
 
-The project still has no complete CLI, tyre performance model, strategy analysis, or counterfactual simulation.
+The project still has no complete CLI, strategy analysis, or counterfactual simulation.
+
+## Current explanatory pace model
+
+RaceDelta now includes a configurable, integer-millisecond pace model for fresh-tyre weather deltas, linear and cliff degradation, plus modeled Green-flag and Safety Car pit losses. See [MODEL.md](MODEL.md) for the formulae and demonstration parameters.
+
+The default parameters are explainable teaching assumptions, not official data for real F1 tyres or circuits, and do not constitute a real-race prediction. Strategy simulation and a complete CLI are still not implemented.
 
 ## Project direction
 
