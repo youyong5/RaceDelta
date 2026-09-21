@@ -206,3 +206,99 @@ pub(all) struct ModelError {
   code : ModelErrorCode
   message : String
 } derive(Eq, Debug)
+
+///|
+/// A planned end-of-lap pit stop and the compound used from the following lap.
+pub(all) struct PlannedPitStop {
+  pit_lap : Int
+  next_compound : Compound
+} derive(Eq, Debug)
+
+///|
+/// The target, opponent, and complete replacement pit plan for a replay.
+pub(all) struct StrategyRequest {
+  target_driver : String
+  opponent_driver : String
+  stops : Array[PlannedPitStop]
+} derive(Eq, Debug)
+
+///|
+/// The target driver's simulated tyre state for one completed lap.
+pub(all) struct SimulatedTyreState {
+  compound : Compound
+  tyre_age_laps : Int
+  pit : Bool
+} derive(Eq, Debug)
+
+///|
+/// Actual and simulated end-of-lap facts for a target-driver strategy replay.
+pub(all) struct StrategyLapComparison {
+  lap : Int
+  neutral_lap_time_ms : Int
+  weather : Weather
+  track_status : TrackStatus
+  actual_lap_time_ms : Int
+  actual_cumulative_time_ms : Int
+  actual_compound : Compound
+  actual_tyre_age_laps : Int
+  actual_pit : Bool
+  actual_position : Int
+  actual_signed_gap_to_opponent_ms : Int
+  simulated_lap_time_ms : Int
+  simulated_cumulative_time_ms : Int
+  simulated_compound : Compound
+  simulated_tyre_age_laps : Int
+  simulated_pit : Bool
+  simulated_position : Int
+  simulated_signed_gap_to_opponent_ms : Int
+  cumulative_time_gain_ms : Int
+} derive(Eq, Debug)
+
+///|
+/// Final comparison between actual and simulated target-driver outcomes.
+pub(all) struct StrategySummary {
+  target_driver : String
+  opponent_driver : String
+  lap_count : Int
+  actual_stop_count : Int
+  simulated_stop_count : Int
+  actual_total_time_ms : Int
+  simulated_total_time_ms : Int
+  time_gain_ms : Int
+  actual_finish_position : Int
+  simulated_finish_position : Int
+  positions_gained : Int
+  actual_final_signed_gap_to_opponent_ms : Int
+  simulated_final_signed_gap_to_opponent_ms : Int
+  opponent_gap_gain_ms : Int
+} derive(Eq, Debug)
+
+///|
+/// A complete deterministic counterfactual replay result.
+pub(all) struct StrategySimulation {
+  request : StrategyRequest
+  laps : Array[StrategyLapComparison]
+  summary : StrategySummary
+} derive(Eq, Debug)
+
+///|
+/// Stable categories for invalid replay requests and model failures.
+pub(all) enum StrategyErrorCode {
+  UnknownTargetDriver
+  UnknownOpponentDriver
+  SameDriver
+  InvalidPitLap
+  DuplicatePitLap
+  InvalidModel
+  NeutralLapFailure
+  EstimatedLapFailure
+  MissingLapState
+} derive(Eq, Debug)
+
+///|
+/// A user-facing replay error; `lap` is populated for lap-specific failures.
+pub(all) struct StrategyError {
+  code : StrategyErrorCode
+  lap : Int?
+  message : String
+} derive(Eq, Debug)

@@ -2,7 +2,7 @@
 
 > A MoonBit race strategy analyzer and counterfactual simulator.
 
-**Status: Early development.** RaceDelta is building a race-process analysis and counterfactual strategy simulation teaching tool. It currently reconstructs deterministic end-of-lap timelines from validated CSV input.
+**Status: Early development.** RaceDelta is building a race-process analysis and counterfactual strategy simulation teaching tool. It currently validates CSV input, reconstructs deterministic end-of-lap timelines, and can replay an explicit replacement pit plan for one target driver.
 
 ## Current commands
 
@@ -31,17 +31,25 @@ Offline fictional examples are available at [basic_race.csv](examples/basic_race
 
 From validated CSV v1 data, the library currently reconstructs integer-millisecond cumulative times, end-of-lap positions, leader gaps, intervals to the car ahead, signed driver-to-driver gaps, tyre stints, and stable pit/status/weather/position events. Safety Car lap times are accumulated exactly as supplied; M2 does not compress gaps.
 
-The project still has no complete CLI, strategy analysis, or counterfactual simulation.
+The project still has no complete CLI, strategy-search workflow, crossover explanation, or final report output.
 
 ## Current explanatory pace model
 
 RaceDelta now includes a configurable, integer-millisecond pace model for fresh-tyre weather deltas, linear and cliff degradation, plus modeled Green-flag and Safety Car pit losses. See [MODEL.md](MODEL.md) for the formulae and demonstration parameters.
 
-The default parameters are explainable teaching assumptions, not official data for real F1 tyres or circuits, and do not constitute a real-race prediction. Strategy simulation and a complete CLI are still not implemented.
+The default parameters are explainable teaching assumptions, not official data for real F1 tyres or circuits, and do not constitute a real-race prediction.
+
+## Current counterfactual replay
+
+The library can replay a complete, explicit set of end-of-lap pit stops for one target driver against one opponent. It derives a neutral anchor from each actual target lap, applies the selected tyres and Green-flag or Safety Car pit loss, and ranks the resulting target cumulative time against unchanged real rivals. The output preserves actual and simulated per-lap facts plus final time, position, and signed-gap comparisons.
+
+A plan replaces the target driver's actual pit plan: an unplanned real pit does not carry into the replay. This is deterministic teaching-model output, not a real-race prediction or a strategy recommendation. See [SIMULATION.md](SIMULATION.md) for the input, output, assumptions, and boundaries.
 
 ## Project direction
 
 - [Product specification](PROJECT_SPEC.md)
 - [Development plan](DEVELOPMENT_PLAN.md)
+- [Pace-model assumptions](MODEL.md)
+- [Counterfactual replay contract](SIMULATION.md)
 
 The MVP will use bundled synthetic or publicly licensed CSV example data and will not depend on live F1 APIs or network access.

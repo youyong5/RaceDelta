@@ -26,7 +26,7 @@
 
 **Done when:** Model assumptions are documented and verified by focused tests.
 
-## M4 — Counterfactual strategy simulator — Not started
+## M4 — Counterfactual strategy simulator — Complete
 
 **Goal:** Simulate target-driver pit-lap or tyre-compound alternatives against one selected opponent.
 

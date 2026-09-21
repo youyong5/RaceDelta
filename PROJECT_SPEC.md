@@ -112,7 +112,21 @@ Tyre age starts at 1; cliff loss begins only after the cliff age. A negative pac
 
 Pit loss is zero for `pit=false`; for a pit lap it is selected by track status. The default demonstration configuration uses `22000 ms` under `GREEN` and `12000 ms` under `SAFETY_CAR`. Safety Car slowing itself remains in the neutral anchor rather than being added by this model.
 
-The default profile values are replaceable demonstration assumptions for explaining strategy relationships. They are not official parameters for any real circuit or tyres and must not be presented as real F1 predictions. The basic tyre degradation and pit-loss rules are decided; performance-crossover search and strategy simulation remain later work.
+The default profile values are replaceable demonstration assumptions for explaining strategy relationships. They are not official parameters for any real circuit or tyres and must not be presented as real F1 predictions. The basic tyre degradation and pit-loss rules are decided; M4 uses them for a deterministic, complete replacement strategy replay. Performance-crossover search remains later work.
+
+## M4 counterfactual strategy replay
+
+M4 provides a deterministic library-level replay for one target driver against one selected opponent. Its public entry point is `simulate_strategy(data, config, request)`, which returns either a complete `StrategySimulation` or a structured `StrategyError`.
+
+- `StrategyRequest` contains a target driver, an opponent driver, and a complete list of `PlannedPitStop` values.
+- A planned stop occurs at the end of its `pit_lap`; the selected `next_compound` begins on the following lap. Stops must be on laps `1 <= pit_lap < lap_count`, are normalized by ascending lap, and duplicate laps are rejected. A stop may select the same compound to obtain fresh tyres.
+- The plan replaces the target driver's actual pit strategy completely. The target starts with the actual first-lap compound and tyre age, but no actual target pit stop or later actual target tyre transition is reused unless the plan explicitly reproduces it.
+- For every target lap, M4 derives a neutral anchor from the actual record using the M3 model, then estimates the simulated lap with the planned tyre state and the actual lap's weather and track status. All values remain integer milliseconds.
+- Every non-target driver keeps the actual CSV lap times and cumulative times. The target's simulated cumulative time is ranked against those unchanged rivals after each lap, with lexicographic driver names breaking exact timing ties.
+- `StrategyLapComparison` exposes actual and simulated lap/cumulative times, tyre states, pits, positions, signed opponent gaps, weather, track status, neutral anchor, and cumulative time gain. Signed gaps are target cumulative time minus opponent cumulative time: positive means the target trails.
+- `StrategySummary` exposes actual and simulated stop counts, final totals, finish positions, signed opponent gaps, and gains. Time and gap gains are actual minus simulated; positions gained are actual finish position minus simulated finish position.
+
+M4 is not a physics or traffic simulation. It does not alter other drivers, infer overtakes within a lap, model traffic/DRS/driver behavior, search strategies, classify crossovers, read files, or provide a complete CLI. See [SIMULATION.md](SIMULATION.md) for the full replay contract and error behavior.
 
 ## Non-goals
 
@@ -126,6 +140,7 @@ The default profile values are replaceable demonstration assumptions for explain
 - CSV v1 fields and missing-value rules are decided as specified above.
 - Gap and position are decided and reconstructed from `lap_time_ms` as defined in M2.
 - The tyre degradation and pit-loss model rules are decided in [MODEL.md](MODEL.md); callers may replace parameters through `PaceModelConfig`.
+- M4 replay semantics and its complete replacement-pit-plan input are decided in [SIMULATION.md](SIMULATION.md).
 - The exact performance-crossover search method remains undecided.
 - Final CLI commands and parameter names.
 - Whether final reports are terminal output, HTML, or both.
