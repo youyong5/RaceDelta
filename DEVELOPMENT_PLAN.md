@@ -14,31 +14,31 @@
 
 **Done when:** Local example CSV data can be parsed and invalid input produces tested, actionable errors.
 
-## M2 — Cumulative time, gaps, stints, and race-event analysis — Not started
+## M2 — Cumulative time, gaps, stints, and race-event analysis — Complete
 
 **Goal:** Reconstruct race timelines and identify stints, gaps, and notable events.
 
 **Done when:** Tested deterministic analysis derives these values from CSV input.
 
-## M3 — Tyre degradation, track state, and pit-loss models
+## M3 — Tyre degradation, track state, and pit-loss models — Not started
 
 **Goal:** Model tyre degradation, dry/damp/wet states, and pit-stop loss including Safety Car conditions.
 
 **Done when:** Model assumptions are documented and verified by focused tests.
 
-## M4 — Counterfactual strategy simulator
+## M4 — Counterfactual strategy simulator — Not started
 
 **Goal:** Simulate target-driver pit-lap or tyre-compound alternatives against one selected opponent.
 
 **Done when:** Actual and counterfactual outcomes can be compared reproducibly from the same input.
 
-## M5 — Turning-point explanations and report output
+## M5 — Turning-point explanations and report output — Not started
 
 **Goal:** Explain performance and strategic crossovers in readable reports.
 
 **Done when:** Reports distinguish the two crossover types and cite the modeled factors behind the result.
 
-## M6 — Example data, tests, README, demonstration, and competition acceptance
+## M6 — Example data, tests, README, demonstration, and competition acceptance — Not started
 
 **Goal:** Package a documented, offline-capable MVP for demonstration and competition review.
 

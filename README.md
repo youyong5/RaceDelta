@@ -2,7 +2,7 @@
 
 > A MoonBit race strategy analyzer and counterfactual simulator.
 
-**Status: Project scaffold / early development.** RaceDelta will combine race-process analysis with counterfactual strategy simulation as a teaching and analysis tool. Racing-analysis features are not implemented yet.
+**Status: Early development.** RaceDelta is building a race-process analysis and counterfactual strategy simulation teaching tool. It currently reconstructs deterministic end-of-lap timelines from validated CSV input.
 
 ## Current commands
 
@@ -27,7 +27,11 @@ lap,driver,lap_time_ms,compound,tyre_age_laps,pit,track_status,weather
 
 Offline fictional examples are available at [basic_race.csv](examples/basic_race.csv) and [mixed_conditions.csv](examples/mixed_conditions.csv). The full validation rules are in the [product specification](PROJECT_SPEC.md#csv-v1-format).
 
-Race pace analysis, gap calculation, strategy analysis, counterfactual simulation, and a full CLI are still not implemented.
+## Current timeline reconstruction
+
+From validated CSV v1 data, the library currently reconstructs integer-millisecond cumulative times, end-of-lap positions, leader gaps, intervals to the car ahead, signed driver-to-driver gaps, tyre stints, and stable pit/status/weather/position events. Safety Car lap times are accumulated exactly as supplied; M2 does not compress gaps.
+
+The project still has no complete CLI, tyre performance model, strategy analysis, or counterfactual simulation.
 
 ## Project direction
 
