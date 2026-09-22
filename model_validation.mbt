@@ -34,6 +34,10 @@ fn find_tyre_profile(
 
 ///|
 /// Validate that the model configuration has exactly one valid profile per compound.
+///
+/// Returns `Ok(())` only when every supported compound has exactly one profile,
+/// degradation and cliff values are valid, and both pit losses are non-negative.
+/// Otherwise returns a structured `ModelError` with a stable error code.
 pub fn validate_pace_model_config(
   config : PaceModelConfig,
 ) -> Result[Unit, ModelError] {

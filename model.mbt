@@ -1,5 +1,8 @@
 ///|
 /// Return the centralized, replaceable demonstration configuration for M3.
+///
+/// Values are integer milliseconds and are illustrative teaching assumptions,
+/// not official F1 data for any circuit, tyre, team, or driver.
 pub fn default_pace_model_config() -> PaceModelConfig {
   {
     tyre_profiles: [
@@ -78,6 +81,11 @@ fn validated_profile(
 
 ///|
 /// Calculate fresh pace plus linear and cliff degradation in integer milliseconds.
+///
+/// `tyre_age_laps` is the completed-lap age and must be at least one. A
+/// positive result makes the lap slower than the neutral anchor; a negative
+/// result makes it faster. Returns `ModelError` for an invalid configuration,
+/// missing profile, or invalid tyre age.
 pub fn tyre_pace_delta_ms(
   config : PaceModelConfig,
   compound : Compound,
@@ -107,6 +115,9 @@ pub fn tyre_pace_delta_ms(
 
 ///|
 /// Return the configured pit loss for a track status after validating the config.
+///
+/// The returned non-negative integer is milliseconds added on a pit lap.
+/// Returns `ModelError` when `config` is invalid.
 pub fn pit_loss_ms(
   config : PaceModelConfig,
   track_status : TrackStatus,
@@ -136,6 +147,10 @@ fn modeled_pit_loss_ms(
 
 ///|
 /// Estimate observed lap time from a positive neutral anchor and model conditions.
+///
+/// Adds the tyre pace delta and, when `pit` is true, the configured track-status
+/// pit loss. Returns a positive integer-millisecond lap time or `ModelError`
+/// for invalid model input or a non-positive result.
 pub fn estimate_lap_time_ms(
   config : PaceModelConfig,
   neutral_lap_time_ms : Int,
@@ -173,6 +188,10 @@ pub fn estimate_lap_time_ms(
 
 ///|
 /// Derive a positive neutral anchor by removing modeled pace and pit effects.
+///
+/// This is the inverse of `estimate_lap_time_ms` for the same model inputs.
+/// It preserves unmodeled observed effects in the anchor and returns
+/// `ModelError` for invalid input or a non-positive derived time.
 pub fn derive_neutral_lap_time_ms(
   config : PaceModelConfig,
   observed_lap_time_ms : Int,

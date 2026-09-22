@@ -223,6 +223,11 @@ fn parse_record(
 
 ///|
 /// Parse, validate, and canonically sort a CSV v1 race input string.
+///
+/// Accepts CRLF or LF, ignores blank lines, trims ordinary cell whitespace, and
+/// returns records sorted by lap then driver. It rejects unsupported quoted CSV
+/// syntax, malformed fields, enum values, and cross-row race constraints with a
+/// structured `RaceError` containing a CSV line and field.
 pub fn parse_race_csv(input : String) -> Result[RaceData, RaceError] {
   let nonblank = []
   let lines = input.split("\n").to_array()

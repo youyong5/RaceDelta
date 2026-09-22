@@ -282,6 +282,12 @@ fn build_summary(
 
 ///|
 /// Replay a complete replacement pit plan for one target driver against real rivals.
+///
+/// `request.stops` replaces, rather than augments, the target driver's observed
+/// stops; other drivers retain their observed timeline. The returned comparisons
+/// use milliseconds where positive `cumulative_time_gain_ms` means the simulated
+/// alternative is faster. Returns a structured `StrategyError` for invalid
+/// model configuration, unknown drivers, illegal stops, or unreconstructable laps.
 pub fn simulate_strategy(
   data : RaceData,
   config : PaceModelConfig,

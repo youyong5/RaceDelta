@@ -148,6 +148,10 @@ fn lap_trace_section(laps : Array[StrategyLapComparison]) -> String {
 
 ///|
 /// Render a stable English Markdown report from an already-derived explanation.
+///
+/// The output is deterministic and contains verdict, strategy comparison,
+/// crossover sections, turning points, a lap trace, and model limitations.
+/// Signed gains are positive when the simulated alternative improves time.
 pub fn render_strategy_markdown(explanation : StrategyExplanation) -> String {
   let summary = explanation.summary
   let mut report = "# RaceDelta Strategy Report\n\n"

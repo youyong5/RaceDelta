@@ -11,6 +11,9 @@ fn pad_three_digits(value : Int) -> String {
 
 ///|
 /// Format an integer-millisecond duration without a leading positive sign.
+///
+/// Negative input keeps a leading minus sign; non-negative input has no plus
+/// sign. The stable output always uses seconds with three decimal places.
 pub fn format_duration_ms(milliseconds : Int) -> String {
   if milliseconds < 0 {
     "-" + format_duration_ms(0 - milliseconds)
@@ -23,6 +26,9 @@ pub fn format_duration_ms(milliseconds : Int) -> String {
 
 ///|
 /// Format an integer-millisecond signed gain or gap with an explicit sign.
+///
+/// Positive values render with `+`, negative values with `-`, and zero as
+/// `0.000 s`; callers supply the domain-specific gain or gap semantics.
 pub fn format_signed_ms(milliseconds : Int) -> String {
   if milliseconds > 0 {
     "+" + format_duration_ms(milliseconds)
@@ -422,6 +428,13 @@ fn sorted_turning_points(
 
 ///|
 /// Explain one completed M4 simulation without replaying or mutating it.
+///
+/// Performance crossovers compare modeled non-pit lap pace, strategic
+/// crossovers compare cumulative time gain, and opponent crossovers compare the
+/// simulated signed gap to the unchanged opponent. Positive time gain means the
+/// alternative improves the target result. Returns `ExplanationError` for an
+/// invalid model or inconsistent simulation; model values remain illustrative,
+/// not official F1 data.
 pub fn explain_strategy(
   config : PaceModelConfig,
   simulation : StrategySimulation,

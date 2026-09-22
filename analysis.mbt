@@ -108,6 +108,10 @@ fn build_states(
 
 ///|
 /// Reconstruct a deterministic end-of-lap timeline from validated CSV v1 data.
+///
+/// `data` must come from `parse_race_csv`; the result contains cumulative
+/// milliseconds, positions, leader gaps, intervals, stints, and stable events.
+/// A positive signed driver-to-driver gap means the named driver trails.
 pub fn analyze_race(data : RaceData) -> RaceAnalysis {
   let drivers : Array[String] = []
   for record in data.records {
@@ -125,6 +129,9 @@ pub fn analyze_race(data : RaceData) -> RaceAnalysis {
 
 ///|
 /// Find one driver's end-of-lap state, or `None` when the driver or lap is absent.
+///
+/// `analysis` is not mutated. The returned state is the end-of-lap state for
+/// the exact `driver` and one-based `lap` query.
 pub fn find_lap_state(
   analysis : RaceAnalysis,
   driver : String,
@@ -140,6 +147,9 @@ pub fn find_lap_state(
 
 ///|
 /// Return driver time minus opponent time at a lap, or `None` for an unknown query.
+///
+/// The result is in milliseconds: positive means `driver` trails `opponent`,
+/// negative means `driver` leads, and zero means equal cumulative time.
 pub fn signed_gap_ms(
   analysis : RaceAnalysis,
   driver : String,
@@ -159,6 +169,9 @@ pub fn signed_gap_ms(
 
 ///|
 /// Return stints in number order for one driver; an unknown driver returns an empty array.
+///
+/// Each stint is reconstructed from validated end-of-lap states and is returned
+/// in chronological stint-number order without mutating `analysis`.
 pub fn stints_for_driver(
   analysis : RaceAnalysis,
   driver : String,

@@ -1,5 +1,8 @@
 ///|
 /// Stable categories for command-line argument and PLAN parsing errors.
+///
+/// Codes distinguish missing, duplicate, and unknown arguments from malformed
+/// or duplicate `LAP:COMPOUND` plan entries.
 pub(all) enum CliErrorCode {
   MissingInputPath
   MissingRequiredOption
@@ -20,6 +23,9 @@ pub extend CliErrorCode with Eq::{not_equal, equal}
 
 ///|
 /// A deterministic, user-facing CLI parsing error.
+///
+/// `field` identifies the option or logical input field; `code` is stable for
+/// programmatic handling and `message` is suitable for stderr output.
 pub struct CliError {
   code : CliErrorCode
   field : String
@@ -33,6 +39,9 @@ pub extend CliError with Eq::{not_equal, equal}
 
 ///|
 /// Parsed CLI input. File paths remain at the command boundary; simulation stays pure.
+///
+/// `target_driver` receives the replacement plan in `stops`; `opponent_driver`
+/// is used for signed-gap comparison. `output_path` selects file output when present.
 pub struct CliOptions {
   input_path : String
   target_driver : String
@@ -48,6 +57,9 @@ pub extend CliOptions with Eq::{not_equal, equal}
 
 ///|
 /// Stable categories for the pure CSV-to-report pipeline.
+///
+/// Codes identify whether CSV validation, strategy simulation, or explanation
+/// failed while producing a Markdown report.
 pub(all) enum CliPipelineErrorCode {
   CsvValidationFailed
   StrategySimulationFailed
@@ -61,6 +73,9 @@ pub extend CliPipelineErrorCode with Eq::{not_equal, equal}
 
 ///|
 /// A user-facing error from the pure CSV-to-Markdown pipeline.
+///
+/// This keeps file I/O out of the core pipeline while exposing a stable failure
+/// phase through `code` and a concise diagnostic through `message`.
 pub struct CliPipelineError {
   code : CliPipelineErrorCode
   message : String
@@ -144,7 +159,10 @@ fn parse_plan_compound(text : String) -> Result[Compound, CliError] {
 
 ///|
 /// Parse `none` or a comma-separated sequence of `LAP:COMPOUND` pit stops.
-/// Lap range and ordering are deliberately delegated to M4 strategy validation.
+///
+/// Each lap must be a positive decimal integer and each compound is one of the
+/// CSV v1 uppercase values. Duplicate laps and malformed items return a
+/// structured `CliError`; lap range and ordering remain M4 validation concerns.
 pub fn parse_stop_plan(
   plan : String,
 ) -> Result[Array[PlannedPitStop], CliError] {
@@ -222,6 +240,10 @@ fn is_option(argument : String) -> Bool {
 
 ///|
 /// Parse program arguments after the executable prefix in any option order.
+///
+/// Requires one CSV path plus `--driver`, `--opponent`, and `--stops`; `-o` or
+/// `--output` is optional. Returns `CliOptions` without file I/O or a
+/// structured `CliError` for missing, duplicate, unknown, or malformed input.
 pub fn parse_cli_arguments(
   arguments : Array[String],
 ) -> Result[CliOptions, CliError] {
@@ -364,6 +386,11 @@ pub fn parse_cli_arguments(
 
 ///|
 /// Convert validated CSV text into the stable M5 Markdown strategy report.
+///
+/// The pure pipeline parses CSV, applies the default illustrative pace model,
+/// simulates `stops` for `target_driver`, explains the result against
+/// `opponent_driver`, and renders Markdown. Returns `CliPipelineError` with a
+/// stable phase code for CSV, simulation, or explanation failure.
 pub fn generate_strategy_report(
   csv : String,
   target_driver : String,
@@ -405,6 +432,9 @@ pub fn generate_strategy_report(
 
 ///|
 /// Return the stable, human-readable CLI usage text.
+///
+/// This has no side effects and describes the executable syntax, PLAN grammar,
+/// supported compounds, output option, and help option.
 pub fn cli_help() -> String {
   (
     #|RaceDelta — race strategy analyzer and counterfactual simulator

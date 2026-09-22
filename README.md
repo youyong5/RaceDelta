@@ -68,6 +68,7 @@ The repository currently has **209 automated tests**. Run them with `moon test -
 - [Crossover and report contract](EXPLANATION.md)
 - [Native CLI contract](CLI.md)
 - [One-page project overview](SUBMISSION.md)
+- [Change log](CHANGELOG.md)
 
 ## License
 
