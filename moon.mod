@@ -15,15 +15,21 @@ version = "0.1.0"
 
 readme = "README.md"
 
-repository = ""
+repository = "https://github.com/youyong5/RaceDelta"
 
 license = "MIT"
 
-keywords = [ ]
+keywords = [
+  "motorsport",
+  "race-strategy",
+  "simulation",
+  "data-analysis",
+  "cli",
+]
 
 preferred_target = "native"
 
-description = ""
+description = "Deterministic race strategy simulation and crossover analysis in MoonBit."
 
 import {
   "moonbitlang/async@0.20.2",
