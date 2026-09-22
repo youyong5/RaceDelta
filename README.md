@@ -2,20 +2,20 @@
 
 > A MoonBit race strategy analyzer and counterfactual simulator.
 
-**Status: Early development.** RaceDelta is building a race-process analysis and counterfactual strategy simulation teaching tool. It currently validates CSV input, reconstructs deterministic end-of-lap timelines, replays an explicit replacement pit plan, detects crossover points, and renders Markdown strategy reports.
+**Status: Early development.** RaceDelta is building a race-process analysis and counterfactual strategy simulation teaching tool. It currently validates CSV input, reconstructs deterministic end-of-lap timelines, replays an explicit replacement pit plan, detects crossover points, and renders Markdown strategy reports through a native offline CLI.
 
 ## Current commands
 
-The generated MoonBit starter example can be checked and tested locally:
+RaceDelta uses the Native target and the official `moonbitlang/async` package for local file and terminal I/O:
 
 ```sh
 moon fmt
-moon check
-moon test
-moon run cmd/main
+moon check --target native
+moon test --target native
+moon run cmd/main -- examples/basic_race.csv --driver ALP --opponent BRV --stops 2:MEDIUM
 ```
 
-The `moon run cmd/main` example currently prints the template greeting; it is not a race-analysis CLI.
+The final command writes the Markdown report to stdout. Add `-o report.md` to create or replace a UTF-8 report file. See [CLI.md](CLI.md) for the full contract, PLAN syntax, Windows-path examples, and current limitations.
 
 ## CSV v1 input
 
@@ -31,7 +31,7 @@ Offline fictional examples are available at [basic_race.csv](examples/basic_race
 
 From validated CSV v1 data, the library currently reconstructs integer-millisecond cumulative times, end-of-lap positions, leader gaps, intervals to the car ahead, signed driver-to-driver gaps, tyre stints, and stable pit/status/weather/position events. Safety Car lap times are accumulated exactly as supplied; M2 does not compress gaps.
 
-The project still has no complete CLI, automatic strategy-search workflow, or final competition delivery.
+The native CLI accepts an explicit strategy plan but does not search for strategies automatically. Final submission or publishing steps remain intentionally out of scope.
 
 ## Current explanatory pace model
 
@@ -56,5 +56,6 @@ The core library can explain an already-completed counterfactual replay with per
 - [Pace-model assumptions](MODEL.md)
 - [Counterfactual replay contract](SIMULATION.md)
 - [Crossover and report contract](EXPLANATION.md)
+- [Native CLI contract](CLI.md)
 
 The MVP will use bundled synthetic or publicly licensed CSV example data and will not depend on live F1 APIs or network access.

@@ -38,8 +38,8 @@
 
 **Done when:** Reports distinguish the two crossover types and cite the modeled factors behind the result.
 
-## M6 — Example data, tests, README, demonstration, and competition acceptance — Not started
+## M6 — Example data, tests, README, demonstration, and competition acceptance — Complete
 
-**Goal:** Package a documented, offline-capable MVP for demonstration and competition review.
+**Goal:** Package a documented, offline-capable MVP for demonstration and competition review, including the Native CLI file workflow.
 
-**Done when:** Example data, automated tests, README instructions, and demonstration material are complete; MoonBit upload and acceptance requirements have been checked before final submission.
+**Done when:** Example data, automated tests, README instructions, CLI demonstration material, and competition acceptance checks are complete; MoonBit upload and acceptance requirements have been checked before final submission.

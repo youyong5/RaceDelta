@@ -142,6 +142,22 @@ M5 also emits stable turning points for status/weather changes, actual and simul
 
 `explain_strategy(config, simulation)` returns a `StrategyExplanation` or a structured `ExplanationError`; `render_strategy_markdown(explanation)` renders its stable report. The report includes verdict, stop comparison, crossover lists, turning points, a lap trace, and explicit model limitations. Its time values are formatted from integer milliseconds to seconds with three decimals. See [EXPLANATION.md](EXPLANATION.md) for the full contract.
 
+## M6 Native CLI file workflow
+
+The current executable package is `cmd/main`, configured for MoonBit's `native` target. It uses the official `moonbitlang/async@0.20.2` package for local UTF-8 file I/O and standard streams; it has no HTTP or other network dependency.
+
+```text
+racedelta <input.csv> --driver <DRIVER> --opponent <DRIVER> --stops <PLAN> [-o <report.md>]
+```
+
+- `input.csv` is read as UTF-8 and passed to the existing CSV v1 parser without changing its validation rules.
+- `--driver` selects the target whose actual pit plan is replaced; `--opponent` selects the comparison driver.
+- `PLAN` is exactly `none`, one `LAP:COMPOUND` item, or comma-separated `LAP:COMPOUND` items. `LAP` is a positive decimal integer and `COMPOUND` is one of `SOFT`, `MEDIUM`, `HARD`, `INTERMEDIATE`, or `WET`. Empty items, whitespace-padded items, malformed separators, and duplicate laps are rejected before replay. Pit-lap range, ordering normalization, and full strategy legality remain M4's responsibility.
+- Without `-o`/`--output`, the generated Markdown report is written unchanged to stdout. With an output path, the file is created or overwritten as UTF-8 and the success notice is written to stderr. Parent directories are not created automatically.
+- The CLI calls the existing pipeline in order: CSV parse, default pace config, strategy replay, explanation, and Markdown render. It does not change M1-M5 model semantics.
+
+See [CLI.md](CLI.md) for runnable commands, error behavior, Windows paths, and limitations.
+
 ## Non-goals
 
 - No real-time race API integration.
@@ -156,8 +172,8 @@ M5 also emits stable turning points for status/weather changes, actual and simul
 - The tyre degradation and pit-loss model rules are decided in [MODEL.md](MODEL.md); callers may replace parameters through `PaceModelConfig`.
 - M4 replay semantics and its complete replacement-pit-plan input are decided in [SIMULATION.md](SIMULATION.md).
 - Automatic strategy search remains a later optional capability; M5 only explains an explicit M4 replay.
-- Final CLI commands and parameter names.
-- Whether final reports are terminal output, HTML, or both.
+- The native CLI command and its parameter names are decided as documented in M6.
+- Markdown terminal output and Markdown-file output are decided for the current MVP; HTML remains out of scope.
 
 ## Acceptance principles
 

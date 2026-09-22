@@ -21,6 +21,10 @@ license = "MIT"
 
 keywords = [ ]
 
-preferred_target = "wasm"
+preferred_target = "native"
 
 description = ""
+
+import {
+  "moonbitlang/async@0.20.2",
+}
