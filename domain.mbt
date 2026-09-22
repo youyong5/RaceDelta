@@ -9,6 +9,12 @@ pub(all) enum Compound {
 } derive(Eq, Debug)
 
 ///|
+pub extend Compound with Eq::{not_equal, equal}
+
+///|
+pub extend Compound with @debug.Debug::{to_repr}
+
+///|
 /// Race-control state shared by every driver on a lap.
 pub(all) enum TrackStatus {
   Green
@@ -415,3 +421,237 @@ pub(all) struct ExplanationError {
   lap : Int?
   message : String
 } derive(Eq, Debug)
+
+///|
+pub extend TrackStatus with Eq::{not_equal, equal}
+
+///|
+pub extend TrackStatus with @debug.Debug::{to_repr}
+
+///|
+pub extend Weather with Eq::{not_equal, equal}
+
+///|
+pub extend Weather with @debug.Debug::{to_repr}
+
+///|
+pub extend LapRecord with Eq::{not_equal, equal}
+
+///|
+pub extend LapRecord with @debug.Debug::{to_repr}
+
+///|
+pub extend RaceData with Eq::{not_equal, equal}
+
+///|
+pub extend RaceData with @debug.Debug::{to_repr}
+
+///|
+pub extend RaceErrorCode with Eq::{not_equal, equal}
+
+///|
+pub extend RaceErrorCode with @debug.Debug::{to_repr}
+
+///|
+pub extend RaceError with Eq::{not_equal, equal}
+
+///|
+pub extend RaceError with @debug.Debug::{to_repr}
+
+///|
+pub extend DriverLapState with Eq::{not_equal, equal}
+
+///|
+pub extend DriverLapState with @debug.Debug::{to_repr}
+
+///|
+pub extend Stint with Eq::{not_equal, equal}
+
+///|
+pub extend Stint with @debug.Debug::{to_repr}
+
+///|
+pub extend PitStopEvent with Eq::{not_equal, equal}
+
+///|
+pub extend PitStopEvent with @debug.Debug::{to_repr}
+
+///|
+pub extend TrackStatusChangeEvent with Eq::{not_equal, equal}
+
+///|
+pub extend TrackStatusChangeEvent with @debug.Debug::{to_repr}
+
+///|
+pub extend WeatherChangeEvent with Eq::{not_equal, equal}
+
+///|
+pub extend WeatherChangeEvent with @debug.Debug::{to_repr}
+
+///|
+pub extend PositionChangeEvent with Eq::{not_equal, equal}
+
+///|
+pub extend PositionChangeEvent with @debug.Debug::{to_repr}
+
+///|
+pub extend RaceEvent with Eq::{not_equal, equal}
+
+///|
+pub extend RaceEvent with @debug.Debug::{to_repr}
+
+///|
+pub extend RaceAnalysis with Eq::{not_equal, equal}
+
+///|
+pub extend RaceAnalysis with @debug.Debug::{to_repr}
+
+///|
+pub extend WeatherPaceDeltas with Eq::{not_equal, equal}
+
+///|
+pub extend WeatherPaceDeltas with @debug.Debug::{to_repr}
+
+///|
+pub extend TyreProfile with Eq::{not_equal, equal}
+
+///|
+pub extend TyreProfile with @debug.Debug::{to_repr}
+
+///|
+pub extend PitLossProfile with Eq::{not_equal, equal}
+
+///|
+pub extend PitLossProfile with @debug.Debug::{to_repr}
+
+///|
+pub extend PaceModelConfig with Eq::{not_equal, equal}
+
+///|
+pub extend PaceModelConfig with @debug.Debug::{to_repr}
+
+///|
+pub extend ModelErrorCode with Eq::{not_equal, equal}
+
+///|
+pub extend ModelErrorCode with @debug.Debug::{to_repr}
+
+///|
+pub extend ModelError with Eq::{not_equal, equal}
+
+///|
+pub extend ModelError with @debug.Debug::{to_repr}
+
+///|
+pub extend PlannedPitStop with Eq::{not_equal, equal}
+
+///|
+pub extend PlannedPitStop with @debug.Debug::{to_repr}
+
+///|
+pub extend StrategyRequest with Eq::{not_equal, equal}
+
+///|
+pub extend StrategyRequest with @debug.Debug::{to_repr}
+
+///|
+pub extend SimulatedTyreState with Eq::{not_equal, equal}
+
+///|
+pub extend SimulatedTyreState with @debug.Debug::{to_repr}
+
+///|
+pub extend StrategyLapComparison with Eq::{not_equal, equal}
+
+///|
+pub extend StrategyLapComparison with @debug.Debug::{to_repr}
+
+///|
+pub extend StrategySummary with Eq::{not_equal, equal}
+
+///|
+pub extend StrategySummary with @debug.Debug::{to_repr}
+
+///|
+pub extend StrategySimulation with Eq::{not_equal, equal}
+
+///|
+pub extend StrategySimulation with @debug.Debug::{to_repr}
+
+///|
+pub extend StrategyErrorCode with Eq::{not_equal, equal}
+
+///|
+pub extend StrategyErrorCode with @debug.Debug::{to_repr}
+
+///|
+pub extend StrategyError with Eq::{not_equal, equal}
+
+///|
+pub extend StrategyError with @debug.Debug::{to_repr}
+
+///|
+pub extend StrategyVerdict with Eq::{not_equal, equal}
+
+///|
+pub extend StrategyVerdict with @debug.Debug::{to_repr}
+
+///|
+pub extend CrossoverKind with Eq::{not_equal, equal}
+
+///|
+pub extend CrossoverKind with @debug.Debug::{to_repr}
+
+///|
+pub extend CrossoverDirection with Eq::{not_equal, equal}
+
+///|
+pub extend CrossoverDirection with @debug.Debug::{to_repr}
+
+///|
+pub extend CrossoverPoint with Eq::{not_equal, equal}
+
+///|
+pub extend CrossoverPoint with @debug.Debug::{to_repr}
+
+///|
+pub extend LapImpact with Eq::{not_equal, equal}
+
+///|
+pub extend LapImpact with @debug.Debug::{to_repr}
+
+///|
+pub extend TurningPointKind with Eq::{not_equal, equal}
+
+///|
+pub extend TurningPointKind with @debug.Debug::{to_repr}
+
+///|
+pub extend TurningPoint with Eq::{not_equal, equal}
+
+///|
+pub extend TurningPoint with @debug.Debug::{to_repr}
+
+///|
+pub extend StrategyPitStop with Eq::{not_equal, equal}
+
+///|
+pub extend StrategyPitStop with @debug.Debug::{to_repr}
+
+///|
+pub extend StrategyExplanation with Eq::{not_equal, equal}
+
+///|
+pub extend StrategyExplanation with @debug.Debug::{to_repr}
+
+///|
+pub extend ExplanationErrorCode with Eq::{not_equal, equal}
+
+///|
+pub extend ExplanationErrorCode with @debug.Debug::{to_repr}
+
+///|
+pub extend ExplanationError with Eq::{not_equal, equal}
+
+///|
+pub extend ExplanationError with @debug.Debug::{to_repr}
